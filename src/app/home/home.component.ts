@@ -8,22 +8,35 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule],
   template: `
     <section class="grid justify-center">
-      <div class="text-center">test</div>
-      <form class="grid grid-cols-2">
-        <input
-          type="text"
-          class="border-2"
-          [(ngModel)]="inputValue"
-          [ngModelOptions]="{ standalone: true }"
-        />
-        <button type="button" (click)="addItemToList(inputValue)">
-          Search
-        </button>
+      <div class="text-center p-4">
+        <p class="text-3xl">Add Items To List</p>
+      </div>
+      <form class=" border-2 rounded-md shadow-sm shadow-orange-500 p-4 ">
+        <div class="grid grid-cols-2 justify-center gap-2 w-full">
+          <input
+            type="text"
+            class="border-2 p-2"
+            [(ngModel)]="inputValue"
+            [ngModelOptions]="{ standalone: true }"
+          />
+
+          <div class="flex justify-center">
+            <button
+              type="button"
+              class="bg-black rounded-full hover:bg-gray-800 text-2xl text-white w-12 h-12"
+              (click)="addItemToList(inputValue)"
+            >
+              +
+            </button>
+          </div>
+        </div>
       </form>
-      <div>
-        <p *ngFor="let item of list; index as i">
+      <div class="mt-2 shadow-sm shadow-orange-300 p-2">
+        <p *ngFor="let item of list; index as i" class="grid grid-cols-2">
           {{ item }}
-          <button class="border-2" (click)="removeFromList(i)">delete</button>
+          <button class="bg-red-700 " (click)="removeFromList(i)">
+            delete
+          </button>
         </p>
       </div>
     </section>
