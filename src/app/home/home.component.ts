@@ -35,7 +35,7 @@ import {
           </div>
         </div>
       </form>
-      <div class="mt-2 bg-[#C7FAE9] rounded-md p-2">
+      <div *ngIf="list.length >= 1" class="mt-2 bg-[#C7FAE9] rounded-md p-2">
         <p *ngFor="let item of list; index as i" class="grid grid-cols-2">
           {{ item }}
           <button
