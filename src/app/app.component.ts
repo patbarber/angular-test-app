@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <main>
       <header class="brand-name"></header>
-      <section class="content h-screen bg-gray-200">
+      <section class="content h-screen bg-[#FFFAFC]">
         <app-home></app-home>
       </section>
     </main>
