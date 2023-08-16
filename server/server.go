@@ -36,6 +36,11 @@ func main() {
 		w.Write([]byte("home"))
 	})
 
+	mux.HandleFunc("/getList", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(newData))
+	})
+
 	handler := cors.Default().Handler(mux)
 
 	if err := http.ListenAndServe(":8080", handler); err != nil {
