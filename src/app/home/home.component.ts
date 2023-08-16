@@ -6,6 +6,7 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
+import axios from 'axios';
 
 @Component({
   selector: 'app-home',
@@ -46,6 +47,9 @@ import {
           </button>
         </p>
       </div>
+      <button class="bg-[#15BEE0] hover:opacity-70" (click)="getList()">
+        get list
+      </button>
     </section>
   `,
   styleUrls: ['./home.component.css'],
@@ -78,5 +82,11 @@ export class HomeComponent {
 
   removeFromList(index: number): void {
     this.list.splice(index, 1);
+  }
+
+  getList() {
+    axios
+      .get('http://localhost:8080/')
+      .then((response) => console.log(response));
   }
 }
