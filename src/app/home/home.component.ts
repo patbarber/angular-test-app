@@ -1,17 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import axios from 'axios';
+import { Observable } from 'rxjs';
+import { ListsService } from '../lists.service';
+import { LoadingComponent } from '../loading/loading.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   template: `
     <section class="grid justify-center">
       <div class="text-center p-4">
@@ -36,9 +37,15 @@ import axios from 'axios';
           </div>
         </div>
       </form>
-      <div *ngIf="list.length >= 1" class="mt-2 bg-[#C7FAE9] rounded-md p-2">
-        <p *ngFor="let item of list; index as i" class="grid grid-cols-2">
-          {{ item }}
+      <div
+        *ngIf="list$ | async; else loading"
+        class="mt-2 bg-[#C7FAE9] rounded-md p-2"
+      >
+        <p
+          *ngFor="let item of list$ | async; index as i"
+          class="grid grid-cols-2"
+        >
+          {{ item.Item }}
           <button
             class="bg-[#15BEE0] hover:opacity-70"
             (click)="removeFromList(i)"
@@ -47,26 +54,33 @@ import axios from 'axios';
           </button>
         </p>
       </div>
-      <button class="bg-[#15BEE0] hover:opacity-70" (click)="getList()">
-        get list
-      </button>
+
+      <ng-template #loading>
+        <div class="flex justify-center my-2">
+          <app-loading></app-loading>
+        </div>
+      </ng-template>
     </section>
   `,
   styleUrls: ['./home.component.css'],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, LoadingComponent],
 })
-export class HomeComponent {
-  list: string[] = [];
+export class HomeComponent implements OnInit {
+  list: any[] = [];
   inputValue = '';
+  list$: Observable<any[]>;
+
+  listService = inject(ListsService);
 
   itemsForm = new FormGroup({
     item: new FormControl(''),
   });
 
+  ngOnInit(): void {
+    this.list$ = this.listService.getList();
+  }
+
   callingFunction() {
-    console.log(
-      '🚀 ~ file: home.component.ts:62 ~ HomeComponent ~ callingFunction ~ itemsForm:',
-      this.itemsForm.value.item
-    );
     if (
       this.itemsForm.value.item === undefined ||
       this.itemsForm.value.item === null
@@ -82,11 +96,5 @@ export class HomeComponent {
 
   removeFromList(index: number): void {
     this.list.splice(index, 1);
-  }
-
-  getList() {
-    axios
-      .get('http://localhost:8080/')
-      .then((response) => console.log(response));
   }
 }
