@@ -22,6 +22,13 @@ func main() {
 	json.Unmarshal([]byte(todoItem), &item)
 	fmt.Printf("Unmarshaled item []: %s\r\n", item)
 
+	newData, err := json.Marshal(item)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Printf("marshalled json = %s\r\n", string(newData))
+	}
+
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
